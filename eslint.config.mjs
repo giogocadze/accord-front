@@ -1,55 +1,98 @@
-// eslint.config.mjs
+import { fixupConfigRules, fixupPluginRules } from '@eslint/compat';
 import js from '@eslint/js';
-import tseslint from '@typescript-eslint/eslint-plugin';
+import { defineConfig } from 'eslint/config';
+import { FlatCompat } from '@eslint/eslintrc';
+import typescriptEslint from '@typescript-eslint/eslint-plugin';
+import _import from 'eslint-plugin-import';
 import tsParser from '@typescript-eslint/parser';
-import react from 'eslint-plugin-react';
-import reactHooks from 'eslint-plugin-react-hooks';
-import unusedImports from 'eslint-plugin-unused-imports';
-import prettier from 'eslint-config-prettier';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-/** @type {import("eslint").Linter.FlatConfig[]} */
-export default [
-  js.configs.recommended,
-  prettier,
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const compat = new FlatCompat({
+  baseDirectory: __dirname,
+  recommendedConfig: js.configs.recommended,
+  allConfig: js.configs.all,
+});
+
+export default defineConfig([
   {
-    files: ['**/*.{ts,tsx}'],
+    extends: fixupConfigRules(
+      compat.extends(
+        'next/core-web-vitals',
+        'eslint:recommended',
+        'plugin:@typescript-eslint/recommended',
+        'plugin:import/errors',
+        'plugin:import/warnings',
+        'plugin:import/typescript',
+        'plugin:prettier/recommended',
+      ),
+    ),
+
+    plugins: {
+      '@typescript-eslint': fixupPluginRules(typescriptEslint),
+      import: fixupPluginRules(_import),
+    },
+
     languageOptions: {
       parser: tsParser,
-      parserOptions: {
-        ecmaVersion: 'latest',
-        sourceType: 'module',
-        ecmaFeatures: {
-          jsx: true,
-        },
-      },
     },
-    plugins: {
-      '@typescript-eslint': tseslint,
-      react,
-      'react-hooks': reactHooks,
-      'unused-imports': unusedImports,
-    },
+
     rules: {
-      'no-undef': 'off',
-      'unused-imports/no-unused-imports': 'warn',
-      'unused-imports/no-unused-vars': [
-        'warn',
+      'no-console': 'error',
+      '@typescript-eslint/interface-name-prefix': 'off',
+      '@typescript-eslint/array-type': 'error',
+      '@typescript-eslint/ban-ts-comment': 'error',
+      '@typescript-eslint/no-inferrable-types': 'error',
+
+      'prettier/prettier': [
+        'error',
         {
-          vars: 'all',
-          varsIgnorePattern: '^_',
-          args: 'after-used',
+          endOfLine: 'auto',
+        },
+      ],
+
+      'no-var': 'error',
+      'prefer-const': 'error',
+      '@typescript-eslint/explicit-function-return-type': 'error',
+
+      '@typescript-eslint/typedef': [
+        'error',
+        {
+          arrayDestructuring: false,
+          arrowParameter: false,
+          memberVariableDeclaration: false,
+          objectDestructuring: false,
+          parameter: true,
+          propertyDeclaration: true,
+          variableDeclaration: false,
+          variableDeclarationIgnoreFunction: true,
+        },
+      ],
+
+      'import/order': [
+        'error',
+        {
+          alphabetize: {
+            order: 'asc',
+          },
+        },
+      ],
+
+      '@typescript-eslint/no-require-imports': 'error',
+      '@typescript-eslint/explicit-module-boundary-types': 'error',
+
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
           argsIgnorePattern: '^_',
         },
       ],
-      '@typescript-eslint/no-explicit-any': 'warn',
-      '@typescript-eslint/explicit-function-return-type': 'warn',
-      'react/react-in-jsx-scope': 'off',
-      'no-console': 'warn',
-    },
-    settings: {
-      react: {
-        version: 'detect',
-      },
+
+      '@typescript-eslint/no-explicit-any': 'error',
+      'react-hooks/rules-of-hooks': 'error',
+      'react-hooks/exhaustive-deps': 'error',
     },
   },
-];
+]);

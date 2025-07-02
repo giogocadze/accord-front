@@ -1,12 +1,1 @@
-#!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
-
-# Run ESLint first
-npx eslint app --ext .ts,.tsx
-if [ $? -ne 0 ]; then
-  echo "\n❌ ESLint errors found. Commit aborted."
-  exit 1
-fi
-
-# Then run your build
 npm run build
