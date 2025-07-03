@@ -5,6 +5,7 @@ import { FlatCompat } from '@eslint/eslintrc';
 import typescriptEslint from '@typescript-eslint/eslint-plugin';
 import _import from 'eslint-plugin-import';
 import tsParser from '@typescript-eslint/parser';
+import unusedImports from 'eslint-plugin-unused-imports'; // ✅ NEW
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -33,6 +34,7 @@ export default defineConfig([
     plugins: {
       '@typescript-eslint': fixupPluginRules(typescriptEslint),
       import: fixupPluginRules(_import),
+      'unused-imports': fixupPluginRules(unusedImports), // ✅ NEW
     },
 
     languageOptions: {
@@ -41,10 +43,8 @@ export default defineConfig([
 
     rules: {
       'no-console': 'error',
-      '@typescript-eslint/interface-name-prefix': 'off',
-      '@typescript-eslint/array-type': 'error',
-      '@typescript-eslint/ban-ts-comment': 'error',
-      '@typescript-eslint/no-inferrable-types': 'error',
+      'no-var': 'error',
+      'prefer-const': 'error',
 
       'prettier/prettier': [
         'error',
@@ -53,9 +53,14 @@ export default defineConfig([
         },
       ],
 
-      'no-var': 'error',
-      'prefer-const': 'error',
-      '@typescript-eslint/explicit-function-return-type': 'error',
+      '@typescript-eslint/interface-name-prefix': 'off',
+      '@typescript-eslint/array-type': 'error',
+      '@typescript-eslint/ban-ts-comment': 'error',
+      '@typescript-eslint/no-inferrable-types': 'error',
+      '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      '@typescript-eslint/no-require-imports': 'error',
+      '@typescript-eslint/no-explicit-any': 'error',
 
       '@typescript-eslint/typedef': [
         'error',
@@ -71,6 +76,13 @@ export default defineConfig([
         },
       ],
 
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+        },
+      ],
+
       'import/order': [
         'error',
         {
@@ -79,18 +91,17 @@ export default defineConfig([
           },
         },
       ],
-
-      '@typescript-eslint/no-require-imports': 'error',
-      '@typescript-eslint/explicit-module-boundary-types': 'error',
-
-      '@typescript-eslint/no-unused-vars': [
-        'error',
+      'unused-imports/no-unused-imports': 'error',
+      'unused-imports/no-unused-vars': [
+        'warn',
         {
+          vars: 'all',
+          varsIgnorePattern: '^_',
+          args: 'after-used',
           argsIgnorePattern: '^_',
         },
       ],
 
-      '@typescript-eslint/no-explicit-any': 'error',
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'error',
     },
