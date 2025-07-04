@@ -1,3 +1,5 @@
-export default function Home() {
-  return <div>salami</div>;
-}
+const Page = () => {
+  return <div></div>;
+};
+
+export default Page;
