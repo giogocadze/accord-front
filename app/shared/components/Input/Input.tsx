@@ -1,35 +1,20 @@
 import Image from 'next/image';
 import React from 'react';
 import styles from './Input.module.scss';
+import { InputPropsInterface } from './interfaces/input-props.interface';
 
-type Props = {
-  className?: string;
-  mode?: 'homePageInput' | 'signInInput';
-  placeholder?: string;
-  value?: string;
-  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  type?: 'text' | 'email' | 'password';
-  isError?: boolean;
-};
-
-const Input = (props: Props) => {
-  const classes = [styles.input];
-
-  if (props.mode === 'homePageInput') {
-    classes.push(styles.homePageInput);
-  } else {
-    classes.push(styles.signInInput);
-  }
-
-  if (props.isError) {
-    classes.push(styles.error);
-  }
+const Input = (props: InputPropsInterface) => {
+  const className =
+    styles.input +
+    ' ' +
+    (props.mode === 'homePageInput' ? styles.homePageInput : styles.signInInput) +
+    (props.isError ? ` ${styles.error}` : '');
 
   return (
     <div className={styles.wrapper}>
       <input
         type={props.type || 'text'}
-        className={classes.join(' ')}
+        className={className}
         placeholder={props.placeholder}
         value={props.value}
         onChange={props.onChange}
