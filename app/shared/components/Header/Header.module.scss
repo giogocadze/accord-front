@@ -1,0 +1,169 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
+.background {
+  width: 100%;
+  height: 88px;
+  background: #000000;
+}
+
+.section {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+}
+
+.content {
+  max-width: 1344px;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+.logo {
+  margin-top: 15px;
+  margin-bottom: 10px;
+  max-width: 66px;
+  width: 100%;
+  height: 65px;
+  border-radius: 50%;
+  background-color: purple;
+}
+
+.main {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav {
+  max-width: 556px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+  color: #ffffff;
+  font-size: 24px;
+  font-family: Inter;
+}
+
+.link {
+  text-decoration: none;
+  color: #ffffff;
+}
+
+.active {
+  text-decoration: none;
+  color: #8a00b4;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 13px;
+  align-items: center;
+}
+
+.burger {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.logoutMobile {
+  display: none;
+}
+
+@media (max-width: 822px) {
+  .nav {
+    max-width: 100%;
+    display: none;
+    position: absolute;
+    top: 88px;
+    background: #121212;
+    padding: 20px;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .navOpen {
+    display: flex;
+    border-radius: 0px 0px 8px 8px;
+    max-width: 96%;
+  }
+
+  .burger {
+    display: block;
+  }
+
+  .background {
+    position: relative;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .wrapper {
+    display: flex;
+    flex-direction: row;
+    gap: 13px;
+    align-items: center;
+  }
+
+  .wrapper > :global(button),
+  .wrapper > .logoutButton {
+    display: none;
+  }
+
+  .logoutMobile {
+    display: flex;
+  }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 13px;
+  align-items: center;
+}
+
+@media screen and (min-width: 1127) and (max-width: 1225px) {
+  .nav {
+    max-width: 550px;
+    width: 100%;
+    font-size: 24px;
+  }
+}
+
+@media screen and (max-width: 1085px) {
+  .nav {
+    max-width: 485px;
+    width: 100%;
+    font-size: 17px;
+    border-radius: 0px 0px 8px 8px;
+  }
+}
+
+@media screen and (max-width: 822px) {
+  .nav {
+    max-width: 96%;
+    width: 100%;
+    font-size: 17px;
+  }
+}
+
+@media screen and (min-width: 600px) and (max-width: 730px) {
+  .nav {
+    max-width: 94%;
+    width: 100%;
+    font-size: 17px;
+  }
+}
+
+@media screen and (min-width: 200px) and (max-width: 600px) {
+  .nav {
+    max-width: 92%;
+    width: 100%;
+    font-size: 17px;
+  }
+}
