@@ -1,0 +1,61 @@
+.seekContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.sliderWrapper {
+  width: 100%;
+  padding: 0 4px;
+}
+
+.seekSlider {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 8px;
+  background-color: #ccc;
+  border-radius: 9999px;
+}
+
+.seekTrack {
+  position: relative;
+  flex: 1;
+  height: 100%;
+  background-color: #a6a5a6;
+}
+
+.seekRange {
+  background: #8a00b4;
+  position: absolute;
+  height: 100%;
+}
+
+.seekThumb {
+  display: block;
+  width: 24px;
+  height: 24px;
+  background-color: white;
+  border-radius: 100px;
+  background: #620080;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    transform 0.2s;
+  outline: none;
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+}
+
+.timeLabels {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  font-size: 16px;
+  color: #d1d5db;
+  padding: 0 4px;
+  margin-top: 10px;
+}

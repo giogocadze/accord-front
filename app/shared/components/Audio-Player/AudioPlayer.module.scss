@@ -1,0 +1,175 @@
+.container {
+  width: 100%;
+  height: 143px;
+  background: #131114;
+  display: flex;
+  justify-content: center;
+  margin-top: 200px;
+
+}
+
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  max-width: 1344px;
+  width: 100%;
+  align-items: center;
+  padding: 15px 0px;
+}
+.album {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.paraghraps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.paraghrap {
+  color: #fff;
+  font-family: Inter;
+  display: inline-block;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+.musicartist {
+  color: #fff;
+  font-family: Inter;
+  display: inline-block;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+.player {
+  display: flex;
+  gap: 8px;
+}
+
+.audiobuttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  max-width: 344px;
+  width: 100%;
+}
+.playbutton {
+  outline: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.seekload {
+  width: 100%;
+}
+.playWrapper {
+  width: 64px;
+  height: 64px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+}
+
+.playIcon {
+  width: 40px;
+  height: 40px;
+}
+
+.buttonwrapper {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.volumecontainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover .box {
+    opacity: 1;
+    pointer-events: auto;
+    transform: translateY(0);
+  }
+}
+.box {
+  position: absolute;
+  bottom: 80%; 
+  left: 23%;
+  transform: translateX(-50%) translateY(10px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+  z-index: 10;
+  padding: 12px 8px;
+}
+.box1 {
+  cursor: pointer;
+}
+/////
+
+.content {
+  position: relative;
+  display: inline-block;
+}
+
+.dotButton {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.dropdown {
+  position: absolute;
+  bottom: 56px;
+  right: 16px;
+  border-radius: 16px;
+  border: 1px solid #3d3a3a;
+  background: #121212;
+  color: white;
+  padding: 16px;
+  width: 200px;
+  z-index: 1000;
+  opacity: 0;
+  transform: translateY(10px) scale(0.95);
+  pointer-events: none;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.dropdownOpen {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+.repeatitem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  cursor: pointer;
+}
+.span {
+  color: #fff;
+  font-family: Inter;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+}
