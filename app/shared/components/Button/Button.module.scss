@@ -1,7 +1,6 @@
-
 .buttonRegistration {
   display: flex;
-  width: 412px;
+  width: 100%;
   height: 60px;
   padding: 15px;
   justify-content: center;
@@ -18,7 +17,7 @@
 
 .buttonNext {
   color: white;
-  width: 80px;
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -42,7 +41,7 @@
 
 .buttonConfirmation {
   display: flex;
-  width: 80px;
+  width: 100%;
   justify-content: center;
   align-items: center;
   border-radius: 8px;
@@ -66,7 +65,7 @@
 
 .outline {
   display: flex;
-  width: 80px;
+  width: 100%;
   padding: 7px 19px 8px 19px;
   justify-content: center;
   align-items: center;

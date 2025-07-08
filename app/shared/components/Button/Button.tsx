@@ -3,12 +3,10 @@ import styles from './Button.module.scss';
 import { ButtonEnum } from './enums/button.enum';
 import { ButtonPropsInterface } from './interfaces/button-props.inteface';
 
-const Button = ({
-  title,
-  className = '',
-  disabled = false,
-  mode = ButtonEnum.BUTTONNEXT,
-}: ButtonPropsInterface) => {
+const Button = (props: ButtonPropsInterface) => {
+  const mode = props.mode ?? ButtonEnum.BUTTONNEXT;
+  const disabled = props.disabled ?? false;
+
   const modeClass =
     mode === ButtonEnum.REGISTRATION
       ? styles.buttonRegistration
@@ -20,11 +18,11 @@ const Button = ({
             ? styles.outline
             : '';
 
-  const combinedClass = styles.buttonBase + ' ' + modeClass + (className ? ' ' + className : '');
+  const combinedClass = modeClass + (props.mode ? ' ' + props.mode : '');
 
   return (
     <button className={combinedClass} disabled={disabled}>
-      {title}
+      {props.title}
     </button>
   );
 };
