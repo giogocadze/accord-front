@@ -3,12 +3,10 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
-import BurgerIcon from '../BurgerIcon/BurgerIcon';
-import CloseIcon from '../CloseIcon/CloseIcon';
 import Input from '../Input/Input';
-import LogoutButton from '../LogoutButton/LogoutButton';
-
+import BurgerIcon from './BurgerIcon/BurgerIcon';
 import styles from './Header.module.scss';
+import LogoutButton from './LogoutButton/LogoutButton';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,7 +23,7 @@ const Header = () => {
         <div className={styles.content}>
           <div className={styles.main}>
             <div className={styles.logo}>
-              <Image src={'./Logo/Music, Audio/Group.svg'} width={64} height={64} alt="Logo" />
+              <Image src={'./Logo/Music, Audio/Note.svg'} width={56} height={56} alt="Logo" />
             </div>
             <nav className={`${styles.nav} ${isOpen ? styles.navOpen : ''}`}>
               {navLinks.map(link => (
@@ -54,10 +52,12 @@ const Header = () => {
                   type="text"
                 />
               </div>
+            </div>
+            <div className={styles.box}>
               <LogoutButton />
             </div>
             <button className={styles.burger} onClick={() => setIsOpen(!isOpen)}>
-              {isOpen ? <CloseIcon /> : <BurgerIcon />}
+              <BurgerIcon mode={isOpen ? 'close' : 'burger'} isOpen={isOpen} onToggle={setIsOpen} />
             </button>
           </div>
         </div>
