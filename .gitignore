@@ -39,3 +39,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+app/shared/components/Audio-Player/volumeSlider/VolumeSlider.tsx
+app/shared/components/Audio-Player/volumeSlider/VolumeSlider.tsx
+app/shared/components/Audio-Player/volumeSlider/VolumeSlider.module.scss
+app/shared/components/Audio-Player/SeekSlider/SeekSlider.tsx
+app/shared/components/Audio-Player/SeekSlider/SeekSlider.module.scss
+app/shared/components/Audio-Player/SeekSlider/SeekSlider.tsx
+app/shared/components/Audio-Player/SeekSlider/SeekSlider.module.scss

@@ -1,5 +1,4 @@
 'use client';
-import { Howl } from 'howler';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 
@@ -8,76 +7,91 @@ import SeekSlider from './SeekSlider/SeekSlider';
 import VolumeSlider from './volumeSlider/VolumeSlider';
 
 const Audioplayer = () => {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const soundRef = useRef<Howl | null>(null);
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [isOpen, setIsOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
   const [volume, setVolume] = useState(0.5);
-  const [prevVolume, setPrevVolume] = useState(volume);
   const [isMuted, setIsMuted] = useState(false);
+  const [prevVolume, setPrevVolume] = useState(volume);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+
   useEffect(() => {
-    const sound = new Howl({
-      src: ['Luna997 x Eko - Aante [Prod.Sabanadze].mp3'],
-      html5: true,
-      volume: 0.5,
-      onplay: () => {
-        setIsPlaying(true);
-        setDuration(sound.duration());
-      },
-      onend: () => {
-        clearInterval(intervalRef.current!);
-        setIsPlaying(false);
-      },
-    });
+    const audio = audioRef.current;
+    if (!audio) return;
 
-    soundRef.current = sound;
+    const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
+    const handleLoadedMetadata = () => setDuration(audio.duration || 0);
+    const handleEnded = () => {
+      setCurrentTime(0);
+      setIsPlaying(false);
+    };
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
 
-    intervalRef.current = setInterval(() => {
-      if (sound.playing()) {
-        setCurrentTime(sound.seek() as number);
-      }
-    }, 500);
+    audio.addEventListener('timeupdate', handleTimeUpdate);
+    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
+    audio.addEventListener('ended', handleEnded);
+    audio.addEventListener('play', handlePlay);
+    audio.addEventListener('pause', handlePause);
+
+    if (audio.readyState >= 1) {
+      handleLoadedMetadata();
+    }
 
     return () => {
-      sound.stop();
-      sound.unload();
-      clearInterval(intervalRef.current!);
+      audio.removeEventListener('timeupdate', handleTimeUpdate);
+      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
+      audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('play', handlePlay);
+      audio.removeEventListener('pause', handlePause);
     };
   }, []);
 
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    audio.volume = volume;
+  }, [volume]);
+
   const togglePlayback = () => {
-    if (!soundRef.current) return;
-    if (soundRef.current.playing()) {
-      soundRef.current.pause();
-      setIsPlaying(false);
+    const audio = audioRef.current;
+    if (!audio) return;
+
+    if (audio.paused) {
+      audio.play();
     } else {
-      soundRef.current.play();
-      setIsPlaying(true);
+      audio.pause();
     }
   };
+
   const toggleMute = () => {
-    if (!soundRef.current) return;
+    const audio = audioRef.current;
+    if (!audio) return;
+
     if (isMuted) {
-      const restoredVolume = prevVolume > 0 ? prevVolume : 0.5;
-      soundRef.current.volume(restoredVolume);
-      setVolume(restoredVolume);
+      const restored = prevVolume > 0 ? prevVolume : 0.5;
+      audio.volume = restored;
+      setVolume(restored);
+      setIsMuted(false);
     } else {
-      if (volume > 0) {
-        setPrevVolume(volume);
-      }
-      soundRef.current.volume(0);
+      setPrevVolume(volume);
+      audio.volume = 0;
       setVolume(0);
+      setIsMuted(true);
     }
-
-    setIsMuted(!isMuted);
   };
-
   const toggleMenu = () => setIsOpen(prev => !prev);
   return (
     <div className={styles.container}>
+      <audio
+        ref={audioRef}
+        src="/Luna997 x Eko - Aante [Prod.Sabanadze].mp3"
+        preload="metadata"
+        hidden
+      />
       <div className={styles.wrapper}>
         <div className={styles.album}>
           <Image alt="Album card" height={112} width={112} src="/audio/anate.png" />
@@ -108,8 +122,8 @@ const Audioplayer = () => {
                 duration={duration}
                 currentTime={currentTime}
                 onChange={value => {
-                  if (soundRef.current) {
-                    soundRef.current.seek(value);
+                  if (audioRef.current) {
+                    audioRef.current.currentTime = value;
                     setCurrentTime(value);
                   }
                 }}
@@ -118,10 +132,10 @@ const Audioplayer = () => {
           </div>
         </div>
         <div className={styles.buttonwrapper}>
-          <Image src={'/audio/shuffle.svg'} height={32} width={32} alt="shuffle" />
+          <Image src="/audio/shuffle.svg" height={32} width={32} alt="shuffle" />
           <div className={styles.volumecontainer}>
             <Image
-              src={isMuted ? '/audio/mutee.svg' : 'audio/volume.svg'}
+              src={isMuted ? '/audio/mute.svg' : '/audio/volume.svg'}
               height={32}
               width={32}
               alt="volume"
@@ -135,13 +149,14 @@ const Audioplayer = () => {
                   onChange={(vol: number) => {
                     setVolume(vol);
                     setIsMuted(vol === 0);
-                    soundRef.current?.volume(vol);
+                    if (audioRef.current) audioRef.current.volume = vol;
                   }}
                 />
               </div>
             )}
           </div>
-          <Image src={'/audio/expand.svg'} height={32} width={32} alt="expand" />
+
+          <Image src="/audio/expand.svg" height={32} width={32} alt="expand" />
           <div className={styles.content} ref={menuRef}>
             <button onClick={toggleMenu} className={styles.dotButton}>
               <Image src="/audio/dot.svg" height={32} width={32} alt="dots" />
@@ -151,7 +166,7 @@ const Audioplayer = () => {
                 <Image src="/audio/add.svg" height={20} width={20} alt="Add To Playlist" />
                 <span className={styles.span}>Add To Playlist</span>
               </div>
-              <div className={styles.repeatitem}>
+              <div className={styles.item}>
                 <Image src="/audio/repeat.svg" height={20} width={20} alt="Play Again" />
                 <span className={styles.span}>Play Again</span>
               </div>
