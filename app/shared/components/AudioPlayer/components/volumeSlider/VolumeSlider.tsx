@@ -1,5 +1,5 @@
 'use client';
-import { VolumeSliderProps } from '../Interfaces/Volume-props.interface';
+import { VolumeSliderProps } from '../../Interfaces/Volume-props.interface';
 import styles from './VolumeSlider.module.scss';
 
 const VolumeSlider = ({ value, onChange }: VolumeSliderProps) => {

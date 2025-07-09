@@ -1,19 +1,13 @@
 'use client';
 import React from 'react';
-import { SeekSliderProps } from '../Interfaces/Slider-props.interface';
+import { formatTime } from '../../../../../helpers/timeformat';
+import { SeekSliderProps } from '../../Interfaces/Slider-props.interface';
 import styles from './SeekSlider.module.scss';
 
 const SeekSlider = ({ duration, currentTime, onChange }: SeekSliderProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value);
     onChange(value);
-  };
-
-  const formatTime = (time: number) => {
-    if (!time || isNaN(time)) return '0:00';
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
   const validDuration = duration && !isNaN(duration) && duration > 0 ? duration : 0;

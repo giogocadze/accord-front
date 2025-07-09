@@ -1,89 +1,36 @@
 'use client';
 import Image from 'next/image';
-import React, { useEffect, useRef, useState } from 'react';
+import React from 'react';
 
 import styles from './AudioPlayer.module.scss';
-import SeekSlider from './SeekSlider/SeekSlider';
-import VolumeSlider from './volumeSlider/VolumeSlider';
+import SeekSlider from './components/SeekSlider/SeekSlider';
+import VolumeSlider from './components/volumeSlider/VolumeSlider';
+import useAudioPlayer from './hook/useAudioPlayer';
 
 const Audioplayer = () => {
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
-  const [volume, setVolume] = useState(0.5);
-  const [isMuted, setIsMuted] = useState(false);
-  const [prevVolume, setPrevVolume] = useState(volume);
-  const menuRef = useRef<HTMLDivElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const {
+    audioRef,
+    currentTime,
+    duration,
+    isOpen,
+    volume,
+    isMuted,
+    menuRef,
+    togglePlayback,
+    toggleMute,
+    toggleMenu,
+    setCurrentTime,
+    setVolume,
+  } = useAudioPlayer();
 
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
-    const handleLoadedMetadata = () => setDuration(audio.duration || 0);
-    const handleEnded = () => {
-      setCurrentTime(0);
-      setIsPlaying(false);
-    };
-    const handlePlay = () => setIsPlaying(true);
-    const handlePause = () => setIsPlaying(false);
-
-    audio.addEventListener('timeupdate', handleTimeUpdate);
-    audio.addEventListener('loadedmetadata', handleLoadedMetadata);
-    audio.addEventListener('ended', handleEnded);
-    audio.addEventListener('play', handlePlay);
-    audio.addEventListener('pause', handlePause);
-
-    if (audio.readyState >= 1) {
-      handleLoadedMetadata();
-    }
-
-    return () => {
-      audio.removeEventListener('timeupdate', handleTimeUpdate);
-      audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
-      audio.removeEventListener('ended', handleEnded);
-      audio.removeEventListener('play', handlePlay);
-      audio.removeEventListener('pause', handlePause);
-    };
-  }, []);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    audio.volume = volume;
-  }, [volume]);
-
-  const togglePlayback = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    if (audio.paused) {
-      audio.play();
+  let isPlaying = false;
+  if (audioRef.current) {
+    if (!audioRef.current.paused) {
+      isPlaying = true;
     } else {
-      audio.pause();
+      isPlaying = false;
     }
-  };
-
-  const toggleMute = () => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    if (isMuted) {
-      const restored = prevVolume > 0 ? prevVolume : 0.5;
-      audio.volume = restored;
-      setVolume(restored);
-      setIsMuted(false);
-    } else {
-      setPrevVolume(volume);
-      audio.volume = 0;
-      setVolume(0);
-      setIsMuted(true);
-    }
-  };
-  const toggleMenu = () => setIsOpen(prev => !prev);
+  }
   return (
     <div className={styles.container}>
       <audio
@@ -148,8 +95,6 @@ const Audioplayer = () => {
                   value={volume}
                   onChange={(vol: number) => {
                     setVolume(vol);
-                    setIsMuted(vol === 0);
-                    if (audioRef.current) audioRef.current.volume = vol;
                   }}
                 />
               </div>
