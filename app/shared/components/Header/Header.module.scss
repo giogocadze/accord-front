@@ -31,28 +31,6 @@
   justify-content: space-between;
 }
 
-.nav {
-  max-width: 495px;
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  gap: 32px;
-  color: #ffffff;
-  font-size: 20px;
-  font-family: Inter;
-}
-
-.link {
-  text-decoration: none;
-  color: #ffffff;
-}
-
-.active {
-  text-decoration: none;
-  color: #8a00b4;
-  font-weight: bold;
-}
-
 .wrapper {
   display: flex;
   flex-direction: row;
