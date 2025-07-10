@@ -1,17 +1,19 @@
 'use client';
 import React from 'react';
-import { formatTime } from '../../../../../helpers/timeformat';
-import { SeekSliderProps } from '../../Interfaces/Slider-props.interface';
-import styles from './SeekSlider.module.scss';
 
-const SeekSlider = ({ duration, currentTime, onChange }: SeekSliderProps) => {
+import { SeekSliderProps } from '../../Interfaces/SeekSliderPropsInterface';
+import styles from './SeekSlider.module.scss';
+import { timeFormat } from '@/app/helpers/timeFormat';
+
+const SeekSlider = (props: SeekSliderProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = Number(e.target.value);
-    onChange(value);
+    props.onChange(value);
   };
 
-  const validDuration = duration && !isNaN(duration) && duration > 0 ? duration : 0;
-  const validCurrentTime = currentTime && !isNaN(currentTime) ? currentTime : 0;
+  const validDuration =
+    props.duration && !isNaN(props.duration) && props.duration > 0 ? props.duration : 0;
+  const validCurrentTime = props.currentTime && !isNaN(props.currentTime) ? props.currentTime : 0;
   const progressPercentage = validDuration > 0 ? (validCurrentTime / validDuration) * 100 : 0;
   return (
     <div className={styles.seekContainer}>
@@ -31,8 +33,8 @@ const SeekSlider = ({ duration, currentTime, onChange }: SeekSliderProps) => {
         />
       </div>
       <div className={styles.timeLabels}>
-        <span>{formatTime(validCurrentTime)}</span>
-        <span>{formatTime(validDuration)}</span>
+        <span>{timeFormat(validCurrentTime)}</span>
+        <span>{timeFormat(validDuration)}</span>
       </div>
     </div>
   );

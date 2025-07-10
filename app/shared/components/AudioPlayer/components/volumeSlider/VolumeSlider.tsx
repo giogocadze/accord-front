@@ -1,11 +1,11 @@
 'use client';
-import { VolumeSliderProps } from '../../Interfaces/Volume-props.interface';
+import { VolumeSliderProps } from '../../Interfaces/VolumeSliderProps.ts';
 import styles from './VolumeSlider.module.scss';
 
-const VolumeSlider = ({ value, onChange }: VolumeSliderProps) => {
+const VolumeSlider = (props: VolumeSliderProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseFloat(e.target.value);
-    onChange?.(newValue);
+    props.onChange?.(newValue);
   };
 
   return (
@@ -16,11 +16,11 @@ const VolumeSlider = ({ value, onChange }: VolumeSliderProps) => {
         min={0}
         max={1}
         step={0.01}
-        value={value}
+        value={props.value}
         onChange={handleChange}
         aria-label="Volume"
         style={{
-          background: `linear-gradient(to right, #fff ${value * 100}%, #8f8f8f ${value * 100}%)`,
+          background: `linear-gradient(to right, #fff ${props.value * 100}%, #8f8f8f ${props.value * 100}%)`,
         }}
       />
     </div>

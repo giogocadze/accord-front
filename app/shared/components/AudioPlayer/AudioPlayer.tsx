@@ -2,10 +2,10 @@
 import Image from 'next/image';
 import React from 'react';
 
+import useAudioPlayer from '../../../hooks/useAudioPlayer';
 import styles from './AudioPlayer.module.scss';
 import SeekSlider from './components/SeekSlider/SeekSlider';
 import VolumeSlider from './components/volumeSlider/VolumeSlider';
-import useAudioPlayer from './hook/useAudioPlayer';
 
 const Audioplayer = () => {
   const {
