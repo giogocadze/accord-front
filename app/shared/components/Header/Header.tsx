@@ -4,9 +4,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import React, { useState } from 'react';
 import Input from '../Input/Input';
-import BurgerIcon from './BurgerIcon/BurgerIcon';
 import styles from './Header.module.scss';
-import LogoutButton from './LogoutButton/LogoutButton';
+import BurgerIcon from './components/BurgerIcon/BurgerIcon';
+import { BurgerIconModeEnum } from './components/BurgerIcon/enums/burger-icon.enum';
+import LogoutButton from './components/LogoutButton/LogoutButton';
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -57,7 +58,11 @@ const Header = () => {
               <LogoutButton />
             </div>
             <button className={styles.burger} onClick={() => setIsOpen(!isOpen)}>
-              <BurgerIcon mode={isOpen ? 'close' : 'burger'} isOpen={isOpen} onToggle={setIsOpen} />
+              <BurgerIcon
+                mode={isOpen ? BurgerIconModeEnum.Close : BurgerIconModeEnum.Burger}
+                isOpen={isOpen}
+                onToggle={setIsOpen}
+              />
             </button>
           </div>
         </div>
