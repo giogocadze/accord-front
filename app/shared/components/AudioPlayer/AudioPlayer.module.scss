@@ -19,7 +19,12 @@
   display: flex;
   align-items: center;
   gap: 16px;
+  max-width: 260px;
+  width: 100%;
+  flex-shrink: 0;
+  overflow: hidden;
 }
+
 .paraghraps {
   display: flex;
   flex-direction: column;
@@ -28,21 +33,31 @@
 .paraghrap {
   color: #fff;
   font-family: Inter;
-  display: inline-block;
   font-size: 32px;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
+  display: block;
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
 .musicartist {
-  color: #fff;
+  color: #ffffffc1;
   font-family: Inter;
-  display: inline-block;
   font-size: 24px;
   font-style: normal;
   font-weight: 600;
   line-height: normal;
+  display: block;
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+
 .player {
   display: flex;
   gap: 8px;
@@ -112,6 +127,9 @@
   padding: 12px 8px;
 }
 .box1 {
+  cursor: pointer;
+}
+.forward {
   cursor: pointer;
 }
 /////

@@ -16,11 +16,15 @@ const Audioplayer = () => {
     volume,
     isMuted,
     menuRef,
+    currentTrack,
     togglePlayback,
     toggleMute,
     toggleMenu,
+    handleNext,
+    handlePrevious,
     setCurrentTime,
     setVolume,
+    handleReplay,
   } = useAudioPlayer();
 
   let isPlaying = false;
@@ -33,23 +37,25 @@ const Audioplayer = () => {
   }
   return (
     <div className={styles.container}>
-      <audio
-        ref={audioRef}
-        src="/Luna997 x Eko - Aante [Prod.Sabanadze].mp3"
-        preload="metadata"
-        hidden
-      />
+      <audio ref={audioRef} src={currentTrack?.src} preload="metadata" hidden />
       <div className={styles.wrapper}>
         <div className={styles.album}>
-          <Image alt="Album card" height={112} width={112} src="/audio/anate.png" />
+          <Image alt="Album card" height={112} width={112} src={currentTrack?.cover} />
           <div className={styles.paraghraps}>
-            <p className={styles.paraghrap}>Anate</p>
-            <p className={styles.musicartist}>Luna 997</p>
+            <p className={styles.paraghrap}>{currentTrack.title}</p>
+            <p className={styles.musicartist}>{currentTrack.artist}</p>
           </div>
         </div>
         <div className={styles.audiobuttons}>
           <div className={styles.player}>
-            <Image src="/audio/backward.svg" height={64} width={64} alt="backward" />
+            <Image
+              src="/audio/backward.svg"
+              height={64}
+              width={64}
+              alt="backward"
+              onClick={handlePrevious}
+              className={styles.forward}
+            />
             <button onClick={togglePlayback} className={styles.playbutton}>
               <div className={styles.playWrapper}>
                 <Image
@@ -61,7 +67,14 @@ const Audioplayer = () => {
                 />
               </div>
             </button>
-            <Image src="/audio/forward.svg" height={64} width={64} alt="forward" />
+            <Image
+              src="/audio/forward.svg"
+              height={64}
+              width={64}
+              alt="forward"
+              onClick={handleNext}
+              className={styles.forward}
+            />
           </div>
           <div className={styles.seekload}>
             <div className={styles.timer}>
@@ -111,11 +124,11 @@ const Audioplayer = () => {
                 <Image src="/audio/add.svg" height={20} width={20} alt="Add To Playlist" />
                 <span className={styles.span}>Add To Playlist</span>
               </div>
-              <div className={styles.item}>
+              <div className={styles.item} onClick={handleReplay}>
                 <Image src="/audio/repeat.svg" height={20} width={20} alt="Play Again" />
                 <span className={styles.span}>Play Again</span>
               </div>
-              <div className={styles.item}>
+              <div className={styles.item} onClick={handleNext}>
                 <Image src="/audio/next.svg" height={20} width={20} alt="Play Next" />
                 <span className={styles.span}>Play Next</span>
               </div>

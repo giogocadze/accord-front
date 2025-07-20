@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
+import { Track } from '../shared/components/AudioPlayer/Interfaces/trackListInterface';
+import { trackList } from '../shared/components/AudioPlayer/data/tracklist';
 
 const useAudioPlayer = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -9,7 +11,8 @@ const useAudioPlayer = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [prevVolume, setPrevVolume] = useState(volume);
   const menuRef = useRef<HTMLDivElement>(null);
-
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const currentTrack: Track = trackList[currentIndex];
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -17,7 +20,7 @@ const useAudioPlayer = () => {
     const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
     const handleLoadedMetadata = () => setDuration(audio.duration || 0);
     const handleEnded = () => {
-      setCurrentTime(0);
+      handleNext();
     };
 
     audio.addEventListener('timeupdate', handleTimeUpdate);
@@ -48,7 +51,15 @@ const useAudioPlayer = () => {
       audio.pause();
     }
   };
+  useEffect(() => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.src = currentTrack.src;
+    audio.load();
 
+    setCurrentTime(0);
+    audio.play();
+  }, [currentTrack]);
   const toggleMute = () => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -65,7 +76,23 @@ const useAudioPlayer = () => {
       setIsMuted(true);
     }
   };
+  const handleNext = () => {
+    setCurrentIndex(prev => (prev + 1) % trackList.length);
+    setCurrentTime(0);
+  };
 
+  const handlePrevious = () => {
+    setCurrentIndex(prev => (prev === 0 ? trackList.length - 1 : prev - 1));
+    setCurrentTime(0);
+  };
+
+  const handleReplay = () => {
+    const audio = audioRef.current;
+    if (!audio) return;
+    audio.currentTime = 0;
+    audio.play();
+    setCurrentTime(0);
+  };
   const toggleMenu = () => setIsOpen(prev => !prev);
 
   return {
@@ -75,12 +102,18 @@ const useAudioPlayer = () => {
     isOpen,
     volume,
     isMuted,
+    currentIndex,
     menuRef,
+    currentTrack,
     togglePlayback,
     toggleMute,
     toggleMenu,
     setCurrentTime,
     setVolume,
+    setCurrentIndex,
+    handleNext,
+    handlePrevious,
+    handleReplay,
   };
 };
 

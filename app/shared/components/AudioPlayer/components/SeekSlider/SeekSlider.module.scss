@@ -16,6 +16,7 @@
   border-radius: 9999px;
   background: #a6a5a6; 
   outline: none;
+  box-shadow: none;
   cursor: pointer;
 
   &::-webkit-slider-runnable-track {
@@ -32,6 +33,7 @@
     margin-top: -6px;
     cursor: pointer;
     border: none;
+    box-shadow: none;
     transition: transform 0.2s;
 
     &:hover {
