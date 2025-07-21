@@ -3,7 +3,7 @@ import React from 'react';
 
 import { SeekSliderProps } from '../../Interfaces/SeekSliderPropsInterface';
 import styles from './SeekSlider.module.scss';
-import { timeFormat } from '@/app/helpers/timeFormat';
+import { timeFormat } from '@/app/shared/helpers/timeformat';
 
 const SeekSlider = (props: SeekSliderProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
