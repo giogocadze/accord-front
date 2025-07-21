@@ -1,33 +1,11 @@
-.wrapper {
+.wrapperContainer {
   display: flex;
-  background-color: black;
-  justify-content: center;
-}
-
-.test {
-  display: flex;
-  width: 100%;
-  max-width: 1344px;
-  flex-direction: column;
-  gap: 24px;
-}
-
-.artistsSeeAll {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.wrapperConteiner {
-  display: flex;
-  gap: 17px;
 }
 
 .container {
   display: flex;
-  align-items: center;
   justify-content: center;
+  align-items: center;
   flex-direction: column;
   gap: 24px;
 }
@@ -55,7 +33,7 @@
 }
 
 .artistsName {
-  color: #fff;
+  color: #000000;
   text-align: center;
   font-family: Inter;
   font-size: 26px;

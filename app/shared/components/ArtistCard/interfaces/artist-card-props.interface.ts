@@ -3,6 +3,6 @@ export interface Artist {
   imageSrc: string;
 }
 
-export interface ArtistCardProps {
-  artists: Artist[];
+export interface SingleArtistPropsInterface {
+  artist: Artist;
 }
