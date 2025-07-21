@@ -3,18 +3,18 @@ import React from 'react';
 import styles from './ArtistCard.module.scss';
 import { SingleArtistPropsInterface } from './interfaces/artist-card-props.interface';
 
-const ArtistCard = ({ artist }: SingleArtistPropsInterface) => {
+const ArtistCard = (props: SingleArtistPropsInterface) => {
   return (
     <div className={styles.wrapperContainer}>
       <div className={styles.container}>
         <Image
           className={styles.artists}
-          src={artist.imageSrc}
+          src={props.imageSrc}
           width={210}
           height={210}
-          alt={artist.name}
+          alt={props.name}
         />
-        <span className={styles.artistsName}>{artist.name}</span>
+        <span className={styles.artistsName}>{props.name}</span>
       </div>
     </div>
   );
