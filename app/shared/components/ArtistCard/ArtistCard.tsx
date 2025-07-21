@@ -5,17 +5,15 @@ import { SingleArtistPropsInterface } from './interfaces/artist-card-props.inter
 
 const ArtistCard = (props: SingleArtistPropsInterface) => {
   return (
-    <div className={styles.wrapperContainer}>
-      <div className={styles.container}>
-        <Image
-          className={styles.artists}
-          src={props.imageSrc}
-          width={210}
-          height={210}
-          alt={props.name}
-        />
-        <span className={styles.artistsName}>{props.name}</span>
-      </div>
+    <div className={styles.container}>
+      <Image
+        className={styles.artists}
+        src={props.imageSrc}
+        width={210}
+        height={210}
+        alt={props.name}
+      />
+      <span className={styles.artistsName}>{props.name}</span>
     </div>
   );
 };
