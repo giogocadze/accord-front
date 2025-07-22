@@ -5,7 +5,6 @@ const useAudioPlayer = (songs: Track[]) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const menuRef = useRef(null);
 
-  const [playlist] = useState<Track[]>(songs);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -13,7 +12,7 @@ const useAudioPlayer = (songs: Track[]) => {
   const [isMuted, setIsMuted] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
-  const currentTrack = playlist[currentIndex];
+  const currentTrack = songs[currentIndex];
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
@@ -63,11 +62,11 @@ const useAudioPlayer = (songs: Track[]) => {
   const toggleMenu = () => setIsOpen(prev => !prev);
 
   const handleNext = () => {
-    setCurrentIndex(prev => (prev + 1) % playlist.length);
+    setCurrentIndex(prev => (prev + 1) % songs.length);
   };
 
   const handlePrevious = () => {
-    setCurrentIndex(prev => (prev - 1 + playlist.length) % playlist.length);
+    setCurrentIndex(prev => (prev - 1 + songs.length) % songs.length);
   };
 
   const handleReplay = () => {

@@ -1,23 +1,18 @@
 'use client';
 import Image from 'next/image';
 import React from 'react';
+
 import useAudioPlayer from '../../../hooks/useAudioPlayer';
 import styles from './AudioPlayer.module.scss';
-import { Track } from './Interfaces/track-list.interface';
-
+import { AudioplayerProps } from './Interfaces/AudioplayerPropsInterface';
 import SeekSlider from './components/SeekSlider/SeekSlider';
 import VolumeSlider from './components/volumeSlider/VolumeSlider';
 
-interface AudioplayerProps {
-  songs: Track[];
-}
+function Audioplayer(props: AudioplayerProps) {
+  const audioPlayerControls = useAudioPlayer(props.songs);
 
-function Audioplayer({ songs }: AudioplayerProps) {
-  const audioPlayerControls = useAudioPlayer(songs);
-
-  const isPlaying = audioPlayerControls.audioRef.current
-    ? !audioPlayerControls.audioRef.current.paused
-    : false;
+  const isPlaying =
+    audioPlayerControls.audioRef.current && !audioPlayerControls.audioRef.current.paused;
 
   return (
     <div className={styles.container}>
@@ -30,7 +25,7 @@ function Audioplayer({ songs }: AudioplayerProps) {
       <div className={styles.wrapper}>
         <div className={styles.album}>
           <Image
-            alt="Album card"
+            alt="Album Cover"
             height={112}
             width={112}
             src={audioPlayerControls.currentTrack?.cover || ''}
@@ -40,6 +35,7 @@ function Audioplayer({ songs }: AudioplayerProps) {
             <p className={styles.musicartist}>{audioPlayerControls.currentTrack?.artist || ''}</p>
           </div>
         </div>
+
         <div className={styles.audiobuttons}>
           <div className={styles.player}>
             <Image
@@ -85,6 +81,7 @@ function Audioplayer({ songs }: AudioplayerProps) {
             </div>
           </div>
         </div>
+
         <div className={styles.buttonwrapper}>
           <Image src="/audio/shuffle.svg" height={32} width={32} alt="shuffle" />
           <div className={styles.volumecontainer}>
@@ -100,19 +97,19 @@ function Audioplayer({ songs }: AudioplayerProps) {
               <div className={styles.box}>
                 <VolumeSlider
                   value={audioPlayerControls.volume}
-                  onChange={(vol: number) => {
-                    audioPlayerControls.setVolume(vol);
-                  }}
+                  onChange={(vol: number) => audioPlayerControls.setVolume(vol)}
                 />
               </div>
             )}
           </div>
 
           <Image src="/audio/expand.svg" height={32} width={32} alt="expand" />
+
           <div className={styles.content} ref={audioPlayerControls.menuRef}>
             <button onClick={audioPlayerControls.toggleMenu} className={styles.dotButton}>
               <Image src="/audio/dot.svg" height={32} width={32} alt="dots" />
             </button>
+
             <div
               className={`${styles.dropdown} ${
                 audioPlayerControls.isOpen ? styles.dropdownOpen : ''
