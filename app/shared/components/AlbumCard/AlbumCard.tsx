@@ -1,14 +1,14 @@
 import Image from 'next/image';
 import React from 'react';
 import styles from './AlbumCard.module.scss';
-import { AlbumCardProps } from './interfaces/albom-card-props.inetface';
+import { AlbumCardPropsInterface } from './interfaces/album-card-props.inetface';
 
-const AlbumCard = ({ imageSrc, albumName, artistName }: AlbumCardProps) => {
+const AlbumCard = (props: AlbumCardPropsInterface) => {
   return (
     <div className={styles.wrapper}>
-      <Image src={imageSrc} alt={albumName} width={230} height={230} />
-      <span className={styles.graduation}>{albumName}</span>
-      <span className={styles.kanyeWest}>{artistName}</span>
+      <Image src={props.imageSrc} alt={props.albumName} width={230} height={230} />
+      <span className={styles.graduation}>{props.albumName}</span>
+      <span className={styles.kanyeWest}>{props.artistName}</span>
     </div>
   );
 };
