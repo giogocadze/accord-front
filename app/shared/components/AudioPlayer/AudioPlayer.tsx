@@ -16,12 +16,7 @@ function Audioplayer(props: AudioplayerProps) {
 
   return (
     <div className={styles.container}>
-      <audio
-        ref={audioPlayerControls.audioRef}
-        src={audioPlayerControls.currentTrack?.src}
-        preload="metadata"
-        hidden
-      />
+      <audio {...audioPlayerControls.audioSpread()} />
       <div className={styles.wrapper}>
         <div className={styles.album}>
           <Image

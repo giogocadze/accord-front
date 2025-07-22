@@ -77,6 +77,12 @@ const useAudioPlayer = (songs: Track[]) => {
     }
   };
 
+  const audioSpread = () => ({
+    ref: audioRef,
+    src: currentTrack?.src,
+    preload: 'metadata',
+    hidden: true,
+  });
   return {
     audioRef,
     menuRef,
@@ -96,6 +102,7 @@ const useAudioPlayer = (songs: Track[]) => {
     setCurrentTime,
     setCurrentIndex,
     setVolume,
+    audioSpread,
   };
 };
 
