@@ -1,4 +1,4 @@
-import { Track } from '../Interfaces/trackListInterface';
+import { Track } from '../Interfaces/track-list.interface';
 
 export const trackList: Track[] = [
   {
