@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import React from 'react';
 
-import useAudioPlayer from '../../../hooks/useAudioPlayer';
+import useAudioPlayer from '../../hooks/useAudioPlayer';
 import styles from './AudioPlayer.module.scss';
 import { AudioplayerProps } from './Interfaces/AudioplayerPropsInterface';
 import SeekSlider from './components/SeekSlider/SeekSlider';
