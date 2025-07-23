@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Track } from '../shared/components/AudioPlayer/Interfaces/track-list.interface';
+import { Track } from '../components/AudioPlayer/Interfaces/track-list.interface';
 
 const useAudioPlayer = (songs: Track[]) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
