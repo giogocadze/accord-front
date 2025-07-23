@@ -20,7 +20,7 @@ const VolumeSlider = (props: VolumeSliderProps) => {
         onChange={handleChange}
         aria-label="Volume"
         style={{
-          background: `linear-gradient(to right, #fff ${props.value * 100}%, #8f8f8f ${props.value * 100}%)`,
+          background: `linear-gradient(to right, #620080 ${props.value * 100}%, #a6a5a6 ${props.value * 100}%)`,
         }}
       />
     </div>

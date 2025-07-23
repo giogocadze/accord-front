@@ -1,42 +1,44 @@
 import { useEffect, useRef, useState } from 'react';
+import { Track } from '../components/AudioPlayer/Interfaces/track-list.interface';
 
-const useAudioPlayer = () => {
+const useAudioPlayer = (songs: Track[]) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const menuRef = useRef(null);
+
+  const [currentIndex, setCurrentIndex] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
-  const [isOpen, setIsOpen] = useState(false);
-  const [volume, setVolume] = useState(0.5);
+  const [volume, setVolume] = useState(1);
   const [isMuted, setIsMuted] = useState(false);
-  const [prevVolume, setPrevVolume] = useState(volume);
-  const menuRef = useRef<HTMLDivElement>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
+  const currentTrack = songs[currentIndex];
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    const handleTimeUpdate = () => setCurrentTime(audio.currentTime);
+    audio.volume = volume;
+
     const handleLoadedMetadata = () => setDuration(audio.duration || 0);
-    const handleEnded = () => {
-      setCurrentTime(0);
-    };
+    const handleTimeUpdate = () => setCurrentTime(audio.currentTime || 0);
 
-    audio.addEventListener('timeupdate', handleTimeUpdate);
     audio.addEventListener('loadedmetadata', handleLoadedMetadata);
-    audio.addEventListener('ended', handleEnded);
-
-    if (audio.readyState >= 1) handleLoadedMetadata();
+    audio.addEventListener('timeupdate', handleTimeUpdate);
 
     return () => {
-      audio.removeEventListener('timeupdate', handleTimeUpdate);
       audio.removeEventListener('loadedmetadata', handleLoadedMetadata);
-      audio.removeEventListener('ended', handleEnded);
+      audio.removeEventListener('timeupdate', handleTimeUpdate);
     };
-  }, []);
+  }, [volume]);
 
   useEffect(() => {
     const audio = audioRef.current;
-    if (audio) audio.volume = volume;
-  }, [volume]);
+    if (!audio || !currentTrack) return;
+
+    audio.src = currentTrack.src;
+    audio.load();
+    audio.play();
+  }, [currentTrack]);
 
   const togglePlayback = () => {
     const audio = audioRef.current;
@@ -53,34 +55,54 @@ const useAudioPlayer = () => {
     const audio = audioRef.current;
     if (!audio) return;
 
-    if (isMuted) {
-      const restored = prevVolume > 0 ? prevVolume : 0.5;
-      audio.volume = restored;
-      setVolume(restored);
-      setIsMuted(false);
-    } else {
-      setPrevVolume(volume);
-      audio.volume = 0;
-      setVolume(0);
-      setIsMuted(true);
-    }
+    audio.muted = !audio.muted;
+    setIsMuted(audio.muted);
   };
 
   const toggleMenu = () => setIsOpen(prev => !prev);
 
+  const handleNext = () => {
+    setCurrentIndex(prev => (prev + 1) % songs.length);
+  };
+
+  const handlePrevious = () => {
+    setCurrentIndex(prev => (prev - 1 + songs.length) % songs.length);
+  };
+
+  const handleReplay = () => {
+    const audio = audioRef.current;
+    if (audio) {
+      audio.currentTime = 0;
+      audio.play();
+    }
+  };
+
+  const audioSpread = () => ({
+    ref: audioRef,
+    src: currentTrack?.src,
+    preload: 'metadata',
+    hidden: true,
+  });
   return {
     audioRef,
+    menuRef,
+    currentTrack,
+    currentIndex,
     currentTime,
     duration,
-    isOpen,
     volume,
     isMuted,
-    menuRef,
+    isOpen,
     togglePlayback,
     toggleMute,
     toggleMenu,
+    handleNext,
+    handlePrevious,
+    handleReplay,
     setCurrentTime,
+    setCurrentIndex,
     setVolume,
+    audioSpread,
   };
 };
 
