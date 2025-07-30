@@ -1,40 +1,31 @@
 'use client';
-import Image from 'next/image';
 import React, { useRef, useEffect, useState } from 'react';
-import styles from './BannerComponent.module.scss';
+import Image from 'next/image';
+import { originalImages } from '../utils/bannerImges';
+import styles from './Banner.module.scss';
 
-const originalImages = [
-  '/bannerComponent/kendrick.png',
-  '/bannerComponent/weeknd.png',
-  '/bannerComponent/Frame5.png',
-];
+const Banner = () => {
+  const [currentIndex, setCurrentIndex] = useState(1);
+  const [, setIsTransitioning] = useState(false);
+  const trackRef = useRef<HTMLDivElement | null>(null);
 
-const BannerComponent = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const trackRef = useRef<HTMLDivElement>(null);
-
-  const images = [...originalImages, ...originalImages, ...originalImages];
-  const originalCount = originalImages.length;
+  const images = [originalImages[originalImages.length - 1], ...originalImages, originalImages[0]];
 
   const handleNext = () => {
-    if (isTransitioning) return;
     setCurrentIndex(prev => prev + 1);
   };
 
   const handlePrev = () => {
-    if (isTransitioning) return;
     setCurrentIndex(prev => prev - 1);
   };
 
   useEffect(() => {
     if (!trackRef.current) return;
-
     const slideWidth = 1340 + 40;
     setIsTransitioning(true);
 
-    const displayIndex = ((currentIndex % originalCount) + originalCount) % originalCount;
-    const actualIndex = displayIndex + originalCount;
+    const displayIndex = currentIndex;
+    const actualIndex = displayIndex;
 
     trackRef.current.style.transition = 'transform 0.5s ease-in-out';
     trackRef.current.style.transform = `translateX(-${actualIndex * slideWidth}px)`;
@@ -44,14 +35,34 @@ const BannerComponent = () => {
     }, 500);
 
     return () => clearTimeout(timer);
-  }, [currentIndex, originalCount]);
+  }, [currentIndex]);
 
   useEffect(() => {
-    if (!trackRef.current) return;
-    const slideWidth = 1340 + 40;
-    trackRef.current.style.transition = 'none';
-    trackRef.current.style.transform = `translateX(-${originalCount * slideWidth}px)`;
-  }, [originalCount]);
+    const handleTransitionEnd = () => {
+      const slideWidth = 1340 + 40;
+
+      if (!trackRef.current) return;
+
+      if (currentIndex === 0) {
+        trackRef.current.style.transition = 'none';
+        setCurrentIndex(originalImages.length);
+        trackRef.current.style.transform = `translateX(-${originalImages.length * slideWidth}px)`;
+      }
+
+      if (currentIndex === originalImages.length + 1) {
+        trackRef.current.style.transition = 'none';
+        setCurrentIndex(1);
+        trackRef.current.style.transform = `translateX(-${slideWidth}px)`;
+      }
+    };
+
+    const node = trackRef.current;
+    if (node) node.addEventListener('transitionend', handleTransitionEnd);
+
+    return () => {
+      if (node) node.removeEventListener('transitionend', handleTransitionEnd);
+    };
+  }, [currentIndex]);
 
   return (
     <div className={styles.wrapper}>
@@ -75,16 +86,16 @@ const BannerComponent = () => {
           </div>
         </div>
 
-        <div className={styles.indicators}>
+        <div className={styles.index}>
           {originalImages.map((_, i) => (
             <button
               key={i}
               className={`${styles.indicator} ${
-                ((currentIndex % originalCount) + originalCount) % originalCount === i
+                (currentIndex - 0 + originalImages.length) % originalImages.length === i
                   ? styles.active
                   : ''
               }`}
-              onClick={() => setCurrentIndex(i)}
+              onClick={() => setCurrentIndex(i + 1)}
             />
           ))}
         </div>
@@ -93,4 +104,4 @@ const BannerComponent = () => {
   );
 };
 
-export default BannerComponent;
+export default Banner;
