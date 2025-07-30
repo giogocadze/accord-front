@@ -1,12 +1,11 @@
 'use client';
 import Image from 'next/image';
-import React, { useRef, useEffect, useState } from 'react';
+import React, { useRef, useEffect, useState, useMemo } from 'react';
 import { originalImages } from '../utils/bannerImges';
 import styles from './Banner.module.scss';
 
 const Banner = () => {
   const [currentIndex, setCurrentIndex] = useState(1);
-  const [, setIsTransitioning] = useState(false);
   const trackRef = useRef<HTMLDivElement | null>(null);
 
   const handleNext = () => setCurrentIndex(prev => prev + 1);
@@ -14,27 +13,20 @@ const Banner = () => {
 
   const totalSlides = originalImages.length;
 
-  const getSliderImages = () => {
+  const sliderImages = useMemo(() => {
     const first = originalImages[0];
     const last = originalImages[originalImages.length - 1];
     return [last, ...originalImages, first];
-  };
+  }, []);
 
   useEffect(() => {
     const slideWidth = 1340 + 40;
 
     if (!trackRef.current) return;
-    setIsTransitioning(true);
 
     trackRef.current.style.transition = 'transform 0.5s ease-in-out';
     trackRef.current.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
-
-    const timeout = setTimeout(() => {
-      setIsTransitioning(false);
-    }, 500);
-
-    return () => clearTimeout(timeout);
-  }, [currentIndex]);
+  });
 
   useEffect(() => {
     const slideWidth = 1340 + 40;
@@ -67,12 +59,12 @@ const Banner = () => {
         <div className={styles.clickZoneRight} onClick={handleNext} />
         <div className={styles.sliderWindow}>
           <div className={styles.sliderTrack} ref={trackRef}>
-            {getSliderImages().map((src, i) => (
+            {sliderImages.map((src: string, i: number) => (
               <div key={i} className={styles.slide}>
                 <Image
                   src={src}
                   alt={`banner-${i}`}
-                  width={1340}
+                  width={1380}
                   height={500}
                   className={styles.image}
                   unoptimized
