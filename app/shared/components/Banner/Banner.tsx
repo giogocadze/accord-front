@@ -9,47 +9,46 @@ const Banner = () => {
   const [, setIsTransitioning] = useState(false);
   const trackRef = useRef<HTMLDivElement | null>(null);
 
-  const images = [originalImages[originalImages.length - 1], ...originalImages, originalImages[0]];
+  const handleNext = () => setCurrentIndex(prev => prev + 1);
+  const handlePrev = () => setCurrentIndex(prev => prev - 1);
 
-  const handleNext = () => {
-    setCurrentIndex(prev => prev + 1);
-  };
+  const totalSlides = originalImages.length;
 
-  const handlePrev = () => {
-    setCurrentIndex(prev => prev - 1);
+  const getSliderImages = () => {
+    const first = originalImages[0];
+    const last = originalImages[originalImages.length - 1];
+    return [last, ...originalImages, first];
   };
 
   useEffect(() => {
-    if (!trackRef.current) return;
     const slideWidth = 1340 + 40;
+
+    if (!trackRef.current) return;
     setIsTransitioning(true);
 
-    const displayIndex = currentIndex;
-    const actualIndex = displayIndex;
-
     trackRef.current.style.transition = 'transform 0.5s ease-in-out';
-    trackRef.current.style.transform = `translateX(-${actualIndex * slideWidth}px)`;
+    trackRef.current.style.transform = `translateX(-${currentIndex * slideWidth}px)`;
 
-    const timer = setTimeout(() => {
+    const timeout = setTimeout(() => {
       setIsTransitioning(false);
     }, 500);
 
-    return () => clearTimeout(timer);
+    return () => clearTimeout(timeout);
   }, [currentIndex]);
 
   useEffect(() => {
-    const handleTransitionEnd = () => {
-      const slideWidth = 1340 + 40;
+    const slideWidth = 1340 + 40;
 
+    const handleTransitionEnd = () => {
       if (!trackRef.current) return;
 
       if (currentIndex === 0) {
         trackRef.current.style.transition = 'none';
-        setCurrentIndex(originalImages.length);
-        trackRef.current.style.transform = `translateX(-${originalImages.length * slideWidth}px)`;
+        setCurrentIndex(totalSlides);
+        trackRef.current.style.transform = `translateX(-${totalSlides * slideWidth}px)`;
       }
 
-      if (currentIndex === originalImages.length + 1) {
+      if (currentIndex === totalSlides + 1) {
         trackRef.current.style.transition = 'none';
         setCurrentIndex(1);
         trackRef.current.style.transform = `translateX(-${slideWidth}px)`;
@@ -57,29 +56,26 @@ const Banner = () => {
     };
 
     const node = trackRef.current;
-    if (node) node.addEventListener('transitionend', handleTransitionEnd);
-
-    return () => {
-      if (node) node.removeEventListener('transitionend', handleTransitionEnd);
-    };
-  }, [currentIndex]);
+    node?.addEventListener('transitionend', handleTransitionEnd);
+    return () => node?.removeEventListener('transitionend', handleTransitionEnd);
+  }, [currentIndex, totalSlides]);
 
   return (
     <div className={styles.wrapper}>
       <div className={styles.slider}>
-        <div className={styles.clickZoneLeft} onClick={handlePrev}></div>
-        <div className={styles.clickZoneRight} onClick={handleNext}></div>
+        <div className={styles.clickZoneLeft} onClick={handlePrev} />
+        <div className={styles.clickZoneRight} onClick={handleNext} />
         <div className={styles.sliderWindow}>
           <div className={styles.sliderTrack} ref={trackRef}>
-            {images.map((src, i) => (
+            {getSliderImages().map((src, i) => (
               <div key={i} className={styles.slide}>
                 <Image
                   src={src}
                   alt={`banner-${i}`}
                   width={1340}
                   height={500}
-                  unoptimized
                   className={styles.image}
+                  unoptimized
                 />
               </div>
             ))}
@@ -91,9 +87,7 @@ const Banner = () => {
             <button
               key={i}
               className={`${styles.indicator} ${
-                (currentIndex - 0 + originalImages.length) % originalImages.length === i
-                  ? styles.active
-                  : ''
+                (currentIndex - 1 + totalSlides) % totalSlides === i ? styles.active : ''
               }`}
               onClick={() => setCurrentIndex(i + 1)}
             />
